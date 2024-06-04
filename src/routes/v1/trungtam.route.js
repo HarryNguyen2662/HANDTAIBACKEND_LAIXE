@@ -11,4 +11,8 @@ router
   .patch(trungtamController.updateTrungtam)
   .delete(trungtamController.deleteTrungtam);
 
+router.route('/authtrungtam/:matrungtam').get(trungtamController.AuthTrungtam);
+router.route('/:trungtamId/listHS').get(trungtamController.getHocvienByTrungtamId);
+router.route('/:trungtamId/listGV').get(trungtamController.getGiaovienByTrungtamId);
+
 module.exports = router;

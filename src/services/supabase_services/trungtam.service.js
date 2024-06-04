@@ -10,7 +10,7 @@ const supabase = require('../../config/supabase');
  */
 const queryTrungtam = async (DataFields) => {
   const { data, error } = await supabase.from('trung_tam').select(DataFields.field);
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid data field');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid data field, ${error.message}`);
   return data;
 };
 
@@ -40,7 +40,7 @@ const createTrungtam = async (trungtamBody) => {
       ngay_cap_nhat: currentTimestamp,
     })
     .select();
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid data to insert');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid data to insert, ${error.message}`);
   return data;
 };
 
@@ -51,7 +51,7 @@ const createTrungtam = async (trungtamBody) => {
  */
 const getTrungtamById = async (id) => {
   const { data, error } = await supabase.from('trung_tam').select().eq('id', id);
-  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, 'Invalid id');
+  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, `Invalid id, ${error.message}`);
   return data;
 };
 
@@ -87,8 +87,7 @@ const updateTrungtamById = async (trungtamId, updateBody) => {
     })
     .eq('id', trungtamId)
     .select();
-
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid id');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid data to update, ${error.message}`);
   return data;
 };
 
@@ -103,8 +102,36 @@ const deleteTrungtamById = async (trungtamId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'trung tam not found');
   }
   const { error } = await supabase.from('trung_tam').delete().eq('id', trungtamId);
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid id');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid id, ${error.message}`);
   return trungtam;
+};
+
+const queryHocvienByTrungtamId = async (trungtamId) => {
+  const trungtam = await getTrungtamById(trungtamId);
+  if (!trungtam) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'hoc vien not found');
+  }
+  const { data, error } = await supabase.from('trung_tam').select('*,hoc_vien(*))').eq('id', trungtamId);
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid id, ${error.message}`);
+  const hocVienArray = data[0].hoc_vien;
+  return hocVienArray;
+};
+
+const queryGiaovienByTrungtamId = async (trungtamId) => {
+  const trungtam = await getTrungtamById(trungtamId);
+  if (!trungtam) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'giao vien not found');
+  }
+  const { data, error } = await supabase.from('trung_tam').select('*,giao_vien(*))').eq('id', trungtamId);
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid id, ${error.message}`);
+  const hocVienArray = data[0].giao_vien;
+  return hocVienArray;
+};
+
+const AuthTrungtam = async (Matrungtam) => {
+  const { data, error } = await supabase.from('trung_tam').select().eq('ma_trung_tam', Matrungtam);
+  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, `Invalid ma trung tam, ${error.message}`);
+  return data;
 };
 
 module.exports = {
@@ -113,4 +140,7 @@ module.exports = {
   getTrungtamById,
   updateTrungtamById,
   deleteTrungtamById,
+  AuthTrungtam,
+  queryHocvienByTrungtamId,
+  queryGiaovienByTrungtamId,
 };

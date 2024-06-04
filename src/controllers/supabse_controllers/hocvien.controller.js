@@ -16,7 +16,7 @@ const getHocvien = catchAsync(async (req, res) => {
 const getHocvienById = catchAsync(async (req, res) => {
   const hocvien = await hocvienService.getHocvienById(req.params.hocvienId);
   if (!hocvien) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Trung tam not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Hoc vien not found');
   }
   res.send(hocvien);
 });
@@ -39,9 +39,14 @@ const updatestudydata = catchAsync(async (req, res) => {
 const AuthHocvien = catchAsync(async (req, res) => {
   const hocvien = await hocvienService.AuthHocvien(req.params.mahocvien);
   if (!hocvien) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Trung tam not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Hoc vien not found');
   }
   res.send(hocvien);
+});
+
+const createfake = catchAsync(async (req, res) => {
+  await hocvienService.createFakedata(req.body);
+  res.status(httpStatus.CREATED);
 });
 
 module.exports = {
@@ -52,4 +57,5 @@ module.exports = {
   deleteHocvien,
   updatestudydata,
   AuthHocvien,
+  createfake,
 };

@@ -12,6 +12,8 @@ router
   .delete(hocvienController.deleteHocvien);
 
 router.route('/:hocvienId').patch(hocvienController.updatestudydata);
+router.route('/fakedata').post(hocvienController.createfake);
+
 router.route('/authhocvien/:mahocvien').get(hocvienController.AuthHocvien);
 
 module.exports = router;

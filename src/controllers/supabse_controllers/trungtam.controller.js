@@ -31,10 +31,31 @@ const deleteTrungtam = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const AuthTrungtam = catchAsync(async (req, res) => {
+  const trungtam = await trungtamService.AuthTrungtam(req.params.matrungtam);
+  if (!trungtam) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Trung tam not found');
+  }
+  res.send(trungtam);
+});
+
+const getHocvienByTrungtamId = catchAsync(async (req, res) => {
+  const result = await trungtamService.queryHocvienByTrungtamId(req.params.trungtamId);
+  res.send(result);
+});
+
+const getGiaovienByTrungtamId = catchAsync(async (req, res) => {
+  const result = await trungtamService.queryGiaovienByTrungtamId(req.params.trungtamId);
+  res.send(result);
+});
+
 module.exports = {
   createTrungtam,
   getTrungtam,
   updateTrungtam,
   getTrungtamById,
   deleteTrungtam,
+  AuthTrungtam,
+  getHocvienByTrungtamId,
+  getGiaovienByTrungtamId,
 };

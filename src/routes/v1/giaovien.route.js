@@ -14,4 +14,6 @@ router
 router.route('/:giaovienId/listHS').get(giaovienController.getHocvienByGiaovienId);
 router.route('/studydata/:giaovienId/:mahocvien').get(giaovienController.queryDataHocvien);
 
+router.route('/authgiaovien/:magiaovien').get(giaovienController.AuthGiaovien);
+
 module.exports = router;

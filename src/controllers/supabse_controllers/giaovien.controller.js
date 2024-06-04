@@ -16,7 +16,7 @@ const getGiaovien = catchAsync(async (req, res) => {
 const getGiaovienById = catchAsync(async (req, res) => {
   const giaovien = await giaovienService.getGiaovienById(req.params.giaovienId);
   if (!giaovien) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Trung tam not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Giao vien not found');
   }
   res.send(giaovien);
 });
@@ -41,6 +41,14 @@ const queryDataHocvien = catchAsync(async (req, res) => {
   res.send(dulieuhoctap);
 });
 
+const AuthGiaovien = catchAsync(async (req, res) => {
+  const giaovien = await giaovienService.AuthGiaovien(req.params.magiaovien);
+  if (!giaovien) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Giao vien not found');
+  }
+  res.send(giaovien);
+});
+
 module.exports = {
   createGiaovien,
   getGiaovien,
@@ -49,4 +57,5 @@ module.exports = {
   deleteGiaovien,
   getHocvienByGiaovienId,
   queryDataHocvien,
+  AuthGiaovien,
 };

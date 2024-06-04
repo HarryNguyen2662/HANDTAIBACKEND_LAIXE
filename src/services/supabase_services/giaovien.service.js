@@ -10,7 +10,7 @@ const supabase = require('../../config/supabase');
  */
 const queryGiaovien = async (DataFields) => {
   const { data, error } = await supabase.from('giao_vien').select(DataFields.field);
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid data field');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid data field, ${error.message}`);
   return data;
 };
 
@@ -37,7 +37,7 @@ const createGiaovien = async (giaovienBody) => {
       ngay_cap_nhat: currentTimestamp,
     })
     .select();
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid data to insert');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid data to insert, ${error.message}`);
   return data;
 };
 
@@ -48,7 +48,7 @@ const createGiaovien = async (giaovienBody) => {
  */
 const getGiaovienById = async (id) => {
   const { data, error } = await supabase.from('giao_vien').select().eq('id', id);
-  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, 'Invalid id by GET method');
+  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, `Invalid id by GET method, ${error.message}`);
   return data;
 };
 /**
@@ -81,7 +81,7 @@ const updateGiaovienById = async (giaovienId, updateBody) => {
     .eq('id', giaovienId)
     .select();
 
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid id');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid data to update, ${error.message}`);
   return data;
 };
 
@@ -96,7 +96,7 @@ const deleteGiaovienById = async (giaovienId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'giao vien not found');
   }
   const { error } = await supabase.from('giao_vien').delete().eq('id', giaovienId);
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid id');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid id, ${error.message}`);
   return giaovien;
 };
 
@@ -106,7 +106,7 @@ const queryHocvienByGiaovienId = async (giaovienId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'giao vien not found');
   }
   const { data, error } = await supabase.from('giao_vien').select('*,hoc_vien(*))').eq('id', giaovienId);
-  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid id');
+  if (error != null) throw new ApiError(httpStatus.BAD_REQUEST, `Invalid id, ${error.message}`);
   const hocVienArray = data[0].hoc_vien;
   return hocVienArray;
 };
@@ -122,10 +122,16 @@ const queryDataHocvienPhuTrach = async (giaovienId, mahocvien) => {
   const hocVienCanTim = hocVienArray.find((hocVien) => hocVien.ma_hoc_vien === mahocvien);
 
   if (!hocVienCanTim) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'hoc vien not found');
+    throw new ApiError(httpStatus.NOT_FOUND, `hoc vien not found, ${error.message}`);
   }
 
   return hocVienCanTim;
+};
+
+const AuthGiaovien = async (Magiaovien) => {
+  const { data, error } = await supabase.from('giao_vien').select().eq('ma_hoc_vien', Magiaovien);
+  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, `Invalid ma giao vien, ${error.message}`);
+  return data;
 };
 
 module.exports = {
@@ -136,4 +142,5 @@ module.exports = {
   deleteGiaovienById,
   queryHocvienByGiaovienId,
   queryDataHocvienPhuTrach,
+  AuthGiaovien,
 };
