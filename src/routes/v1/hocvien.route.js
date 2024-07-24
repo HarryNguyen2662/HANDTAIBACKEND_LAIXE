@@ -11,7 +11,7 @@ router
   .patch(hocvienController.updateHocvien)
   .delete(hocvienController.deleteHocvien);
 
-router.route('/:hocvienId').patch(hocvienController.updatestudydata);
+router.route('/updatehoctap/:hocvienId').patch(hocvienController.updatedulieuhoctap);
 router.route('/fakedata').post(hocvienController.createfake);
 
 router.route('/authhocvien/:mahocvien').get(hocvienController.AuthHocvien);

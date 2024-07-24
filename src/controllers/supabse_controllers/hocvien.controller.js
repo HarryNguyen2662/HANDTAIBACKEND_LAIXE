@@ -31,8 +31,8 @@ const deleteHocvien = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
-const updatestudydata = catchAsync(async (req, res) => {
-  const hocvien = await hocvienService.UpdateStudyData(req.params.hocvienId, req.body);
+const updatedulieuhoctap = catchAsync(async (req, res) => {
+  const hocvien = await hocvienService.Updatedulieuhoctap(req.params.hocvienId, req.body);
   res.send(hocvien);
 });
 
@@ -55,7 +55,7 @@ module.exports = {
   updateHocvien,
   getHocvienById,
   deleteHocvien,
-  updatestudydata,
+  updatedulieuhoctap,
   AuthHocvien,
   createfake,
 };

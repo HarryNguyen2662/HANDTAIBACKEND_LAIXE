@@ -65,8 +65,8 @@ const getHocvienById = async (id) => {
  * @returns {Promise<hoc vien>}
  */
 const updateHocvienById = async (hocvienId, updateBody) => {
-  const trungtam = await getHocvienById(hocvienId);
-  if (!trungtam) {
+  const hocvien = await getHocvienById(hocvienId);
+  if (!hocvien) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Hoc vien not found');
   }
 
@@ -111,16 +111,22 @@ const deleteHocvienById = async (hocvienId) => {
   return hocvien;
 };
 
-const UpdateStudyData = async (hocvienId, updateBody) => {
-  const trungtam = await getHocvienById(hocvienId);
-  if (!trungtam) {
+const Updatedulieuhoctap = async (hocvienId, updateBody) => {
+  const hocvien = await getHocvienById(hocvienId);
+  if (!hocvien) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Hoc vien not found');
   }
+
+  const currentTimestamp = new Date().toLocaleString('en-US', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    timeZoneName: 'short',
+  });
 
   const { error } = await supabase
     .from('hoc_vien')
     .update({
-      du_lieu_hoc_tap: updateBody.dulieuhoctap,
+      du_lieu: updateBody.dulieuhoctap,
+      ngay_gio_cap_nhat: currentTimestamp,
     })
     .eq('id', hocvienId)
     .select();
@@ -184,7 +190,7 @@ module.exports = {
   getHocvienById,
   updateHocvienById,
   deleteHocvienById,
-  UpdateStudyData,
+  Updatedulieuhoctap,
   AuthHocvien,
   createFakedata,
 };

@@ -49,6 +49,14 @@ const getGiaovienByTrungtamId = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const AuthTrungtamByEmail = catchAsync(async (req, res) => {
+  const trungtam = await trungtamService.AuthTrungtamByEmail(req.params.Email);
+  if (!trungtam) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Trung tam not found');
+  }
+  res.send(trungtam);
+});
+
 module.exports = {
   createTrungtam,
   getTrungtam,
@@ -58,4 +66,5 @@ module.exports = {
   AuthTrungtam,
   getHocvienByTrungtamId,
   getGiaovienByTrungtamId,
+  AuthTrungtamByEmail,
 };

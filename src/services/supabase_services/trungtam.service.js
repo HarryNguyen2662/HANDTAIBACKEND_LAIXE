@@ -134,6 +134,12 @@ const AuthTrungtam = async (Matrungtam) => {
   return data;
 };
 
+const AuthTrungtamByEmail = async (Email) => {
+  const { data, error } = await supabase.from('trung_tam').select().eq('email', Email);
+  if (error != null) throw new ApiError(httpStatus.NOT_FOUND, `Invalid email trung tam, ${error.message}`);
+  return data;
+};
+
 module.exports = {
   queryTrungtam,
   createTrungtam,
@@ -143,4 +149,5 @@ module.exports = {
   AuthTrungtam,
   queryHocvienByTrungtamId,
   queryGiaovienByTrungtamId,
+  AuthTrungtamByEmail,
 };

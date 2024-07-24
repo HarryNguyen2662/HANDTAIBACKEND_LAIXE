@@ -129,7 +129,7 @@ const queryDataHocvienPhuTrach = async (giaovienId, mahocvien) => {
 };
 
 const AuthGiaovien = async (Magiaovien) => {
-  const { data, error } = await supabase.from('giao_vien').select().eq('ma_hoc_vien', Magiaovien);
+  const { data, error } = await supabase.from('giao_vien').select().eq('ma_giao_vien', Magiaovien);
   if (error != null) throw new ApiError(httpStatus.NOT_FOUND, `Invalid ma giao vien, ${error.message}`);
   return data;
 };

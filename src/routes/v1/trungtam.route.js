@@ -12,6 +12,7 @@ router
   .delete(trungtamController.deleteTrungtam);
 
 router.route('/authtrungtam/:matrungtam').get(trungtamController.AuthTrungtam);
+router.route('/authtrungtambyEmail/:Email').get(trungtamController.AuthTrungtamByEmail);
 router.route('/:trungtamId/listHS').get(trungtamController.getHocvienByTrungtamId);
 router.route('/:trungtamId/listGV').get(trungtamController.getGiaovienByTrungtamId);
 
