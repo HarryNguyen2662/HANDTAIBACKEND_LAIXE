@@ -1,1 +1,1 @@
-web: npm install --save-dev husky && npm install && npm start
+web: npm install husky && npm install && npm start
