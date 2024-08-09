@@ -11,7 +11,7 @@ let server;
   });
 });*/
 
-server = app.listen(config.port, () => {
+server = app.listen(process.env.PORT || 3000, () => {
   logger.info(`Listening to port ${config.port}`);
 });
 
