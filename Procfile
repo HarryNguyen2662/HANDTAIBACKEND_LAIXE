@@ -1,1 +1,1 @@
-web: npm i && npm start
+web: npm uninstall husky && npm install --save-dev husky && npm install && npm start
